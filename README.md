@@ -2,6 +2,14 @@
 
 Automated REST API tests for the Restful Booker service using Page Object Model pattern.
 
+## Project Information
+
+| Field | Details |
+|-------|---------|
+| **Author** | Susan Laime Lucero |
+| **Course** | Certification II |
+| **Instructor** | Mauricio Terceros |
+
 ## Tech Stack
 
 - **Java 17** - Programming language
