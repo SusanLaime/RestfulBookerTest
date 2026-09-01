@@ -1,6 +1,9 @@
 package tests;
 
 import clients.BookingClient;
+import io.restassured.RestAssured;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,9 +51,11 @@ public class BookingTests {
     }
 
     @Test
+    //Expected Bad Request
     public void test04_CreateBookingWithoutFirstName() {
         // Intentionally missing the required "firstname" field
         String payloadWithoutFirstName = "{"
+                //+ "\"firstname\": \"Doe\","
                 + "\"lastname\": \"Doe\","
                 + "\"totalprice\": 150,"
                 + "\"depositpaid\": true,"
@@ -71,9 +76,11 @@ public class BookingTests {
         response.then().assertThat().statusCode(400);
     }
 
-    @Test
+    /*@Test
     public void test05_CreateBookingWithInvalidTotalPrice() {
-        // Intentionally sending a non-numeric value for "totalprice"
+
+        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
+
         String payloadWithInvalidTotalPrice = "{"
                 + "\"firstname\": \"John\","
                 + "\"lastname\": \"Doe\","
@@ -87,10 +94,34 @@ public class BookingTests {
                 + "}";
 
         Response response = bookingClient.createBookingRaw(payloadWithInvalidTotalPrice);
-        response.then().log().body();
 
-        // Expected: the API should reject a non-numeric totalprice.
-        // NOTE: same caveat as test04 - restful-booker may accept this anyway (known validation gap).
         response.then().assertThat().statusCode(400);
+    }*/
+
+    @Test
+    public void test05_CreateBookingWithInvalidTotalPrice() {
+
+        // Enable full logging for debugging
+        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
+
+        String payloadWithInvalidTotalPrice = "{"
+                + "\"firstname\": \"John\","
+                + "\"lastname\": \"Doe\","
+                + "\"totalprice\": \"abc\","
+                + "\"depositpaid\": true,"
+                + "\"bookingdates\": {"
+                + "\"checkin\": \"2026-01-01\","
+                + "\"checkout\": \"2026-01-05\""
+                + "},"
+                + "\"additionalneeds\": \"Breakfast\""
+                + "}";
+
+        Response response = bookingClient.createBookingRaw(payloadWithInvalidTotalPrice);
+
+        // Expect 200 because Restful Booker does NOT validate totalprice
+        response.then().statusCode(400);
     }
+
+
+
 }
