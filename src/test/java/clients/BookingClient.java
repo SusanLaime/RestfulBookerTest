@@ -51,11 +51,20 @@ public class BookingClient {
      * Used by the negative test cases, whose payloads intentionally don't
      * match the Booking model (a missing field, or a field with the wrong type).
      */
-    public Response createBookingRaw(String rawJsonBody) {
+    /*public Response createBookingRaw(String rawJsonBody) {
         return RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(rawJsonBody)
                 .when().post("/booking");
+    }*/
+    public Response createBookingRaw(String payload) {
+        return RestAssured.given()
+                .baseUri("https://restful-booker.herokuapp.com")
+                .header("Accept", "application/json")        // FIXED
+                .contentType("application/json")             // Required
+                .body(payload)
+                .post("/booking");
     }
+
 }
