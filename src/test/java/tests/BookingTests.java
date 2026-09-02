@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static clients.BookingPayloads.BOOKING_WITHOUT_FIRST_NAME;
+import static clients.BookingPayloads.BOOKING_WITH_INVALID_TOTAL_PRICE;
 import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.empty;
@@ -54,17 +56,7 @@ public class BookingTests {
     //Expected Bad Request
     public void test04_CreateBookingWithoutFirstName() {
         // Intentionally missing the required "firstname" field
-        String payloadWithoutFirstName = "{"
-                //+ "\"firstname\": \"Doe\","
-                + "\"lastname\": \"Doe\","
-                + "\"totalprice\": 150,"
-                + "\"depositpaid\": true,"
-                + "\"bookingdates\": {"
-                + "\"checkin\": \"2026-01-01\","
-                + "\"checkout\": \"2026-01-05\""
-                + "},"
-                + "\"additionalneeds\": \"Breakfast\""
-                + "}";
+        String payloadWithoutFirstName = BOOKING_WITHOUT_FIRST_NAME;
 
         Response response = bookingClient.createBookingRaw(payloadWithoutFirstName);
         response.then().log().body();
@@ -76,27 +68,6 @@ public class BookingTests {
         response.then().assertThat().statusCode(400);
     }
 
-    /*@Test
-    public void test05_CreateBookingWithInvalidTotalPrice() {
-
-        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
-
-        String payloadWithInvalidTotalPrice = "{"
-                + "\"firstname\": \"John\","
-                + "\"lastname\": \"Doe\","
-                + "\"totalprice\": \"abc\","
-                + "\"depositpaid\": true,"
-                + "\"bookingdates\": {"
-                + "\"checkin\": \"2026-01-01\","
-                + "\"checkout\": \"2026-01-05\""
-                + "},"
-                + "\"additionalneeds\": \"Breakfast\""
-                + "}";
-
-        Response response = bookingClient.createBookingRaw(payloadWithInvalidTotalPrice);
-
-        response.then().assertThat().statusCode(400);
-    }*/
 
     @Test
     public void test05_CreateBookingWithInvalidTotalPrice() {
@@ -104,17 +75,7 @@ public class BookingTests {
         // Enable full logging for debugging
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
 
-        String payloadWithInvalidTotalPrice = "{"
-                + "\"firstname\": \"John\","
-                + "\"lastname\": \"Doe\","
-                + "\"totalprice\": \"abc\","
-                + "\"depositpaid\": true,"
-                + "\"bookingdates\": {"
-                + "\"checkin\": \"2026-01-01\","
-                + "\"checkout\": \"2026-01-05\""
-                + "},"
-                + "\"additionalneeds\": \"Breakfast\""
-                + "}";
+        String payloadWithInvalidTotalPrice = BOOKING_WITH_INVALID_TOTAL_PRICE;
 
         Response response = bookingClient.createBookingRaw(payloadWithInvalidTotalPrice);
 
