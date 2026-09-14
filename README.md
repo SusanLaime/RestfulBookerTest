@@ -8,7 +8,7 @@ Automated REST API tests for the Restful Booker service using Page Object Model 
 |-------|---------|
 | **Author** | Susan Laime Lucero |
 | **Course** | Certification II |
-| **Instructor** | Mauricio Terceros |
+| **Instructor** | Mauricio Viscarra |
 
 ## Tech Stack
 
